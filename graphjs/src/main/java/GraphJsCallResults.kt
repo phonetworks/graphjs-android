@@ -1,30 +1,6 @@
 package com.phonetwork.graphjs
 
 import com.beust.klaxon.Json
-import java.net.URI
-import java.util.*
-
-data class GraphJsUserProfile(val username: String,
-                              val email: String,
-                              val joinTime: Date? = null,
-                              val avatar: URI? = null,
-                              val birthday: Date? = null,
-                              val about: String? = null,
-                              val followerCount: Int = 0,
-                              val followingCount: Int = 0,
-                              val membershipCount: Int = 0)
-
-data class GraphJsThread(val id: String,
-                         val title: String,
-                         @Json("author") val authorId: String,
-                         @Json("timestamp") val created: Date,
-                         @Json("contributor") val contributorIds: List<String>)
-
-data class GraphJsThreadMessage(
-        val id: String,
-        @Json("author") val authorId: String,
-        val content: String,
-        @Json("timestamp") val created: Date)
 
 data class GraphJsCallResult(
         val success: Boolean = false,
@@ -43,23 +19,23 @@ data class GraphJsLoginCallResult(
 data class GraphJsProfileCallResult(
         val success: Boolean = false,
         val reason: String? = null,
-        val profile: GraphJsUserProfile? = null)
+        val profile: UserProfile? = null)
 
-data class GraphJsThreadMessageCreateResult(
+data class GraphJsCreateCallResult(
         val success: Boolean = false,
         val reason: String? = null,
-        val threadMessageId: String? = null)
+        val id: String? = null)
 
 data class GraphJsThreadCallResult(
         val success: Boolean = false,
         val reason: String? = null,
         val title: String? = null,
-        val messages: List<GraphJsThreadMessage>? = null)
+        val messages: List<ThreadMessage> = listOf())
 
 data class GraphJsThreadsCallResult(
         val success: Boolean = false,
         val reason: String? = null,
-        val threads: List<GraphJsThread>? = null)
+        val threads: List<ForumThread> = listOf())
 
 data class GraphJsCallCountResult(
         val success: Boolean = false,
@@ -71,7 +47,63 @@ data class GraphJsCallFeedTokenResult(
         val reason: String? = null,
         val token: String? = null)
 
-enum class GraphJsFeedType(val value: String) {
-    Wall("wall"),
-    Timeline("timeline")
-}
+data class GraphJsMembersCallResult(
+        val success: Boolean = false,
+        val reason: String? = null,
+        val members: Map<String, Member> = mapOf())
+
+data class GraphJsFollowingCallResult(
+        val success: Boolean = false,
+        val reason: String? = null,
+        val following: Map<String, Member> = mapOf())
+
+data class GraphJsFollowersCallResult(
+        val success: Boolean = false,
+        val reason: String? = null,
+        val followers: Map<String, Member> = mapOf())
+
+data class GraphJsSendMessageResult(
+        val success: Boolean = false,
+        val reason: String? = null,
+        val messageId: String? = null)
+
+data class GraphJsDirectMessageResult(
+        val success: Boolean = false,
+        val reason: String? = null,
+        val message: DirectMessage? = null)
+
+data class GraphJsDirectMessagesResult(
+        val success: Boolean = false,
+        val reason: String? = null,
+        val messages: Map<String, DirectMessage>? = mapOf())
+
+data class GraphJsGroupsResult(
+        val success: Boolean = false,
+        val reason: String? = null,
+        val groups: List<Group> = listOf())
+
+data class GraphJsGroupResult(
+        val success: Boolean = false,
+        val reason: String? = null,
+        val group: Group? = null)
+
+data class GraphJsGroupMembersResult(
+        val success: Boolean = false,
+        val reason: String? = null,
+        @Json("members")val memberIds: List<String> = listOf())
+
+data class GraphJsIsStarredResult(
+        val success: Boolean = false,
+        val reason: String? = null,
+        val count: Int = 0,
+        @Json("starred") val starredByMe: Boolean = false)
+
+data class GraphJsStarsStatResult(
+        val success: Boolean = false,
+        val reason: String? = null,
+        val pages: Map<String, StarsStatEntry> = mapOf())
+
+data class GraphJsCommentsResult(
+        val success: Boolean = false,
+        val reason: String? = null,
+        val comments: Map<String, ContentComment> = mapOf())
