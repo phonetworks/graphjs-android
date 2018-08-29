@@ -16,7 +16,7 @@ import java.util.*
 import java.util.concurrent.CountDownLatch
 
 @RunWith(AndroidJUnit4::class)
-class GraphJsApiManagerTest {
+class ApiManagerTest {
     // data can be generated with git@github.com:phonetworks/graphjs.git/scripts/data-gen
     companion object {
         const val testUserName = "johndoe"
@@ -30,7 +30,7 @@ class GraphJsApiManagerTest {
     
     private lateinit var context: Context
 
-    private val subject: GraphJsApiManager by lazy { GraphJsApiManager(context,
+    private val subject: ApiManager by lazy { ApiManager(context,
             "http://10.0.3.2:1338/",    // genymotion emulator host gateway
             "79982844-6a27-4b3b-b77f-419a79be0e10",
             debugLogs = true)

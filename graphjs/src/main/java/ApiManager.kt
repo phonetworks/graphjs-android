@@ -20,7 +20,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-class GraphJsApiManager
+class ApiManager
     @JvmOverloads constructor(
             context: Context,
             url: String = "http://phonetworks.com:1338/",
