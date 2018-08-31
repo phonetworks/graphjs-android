@@ -704,6 +704,7 @@ class ApiManager
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)
 
+        // TODO check if make sense to return request as some generic instance of Cancellable/Disposable
         requestQueue.add(request)
     }
 
