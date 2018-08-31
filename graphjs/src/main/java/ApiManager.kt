@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit
 class ApiManager
     @JvmOverloads constructor(
             context: Context,
-            url: String = "http://phonetworks.com:1338/",
+            url: String = "https://phonetworks.com:1338/",
             private val publicId: String = "16D58CF2-FD88-4A49-972B-6F60054BF023",
             private val requestTimeoutMillis: Int = TimeUnit.SECONDS.toMillis(20).toInt(),
             private val debugLogs: Boolean = false) {
