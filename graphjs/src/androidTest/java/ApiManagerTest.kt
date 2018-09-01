@@ -962,7 +962,7 @@ class ApiManagerTest {
 
         lock = CountDownLatch(1)
         var deleteResult1 = GraphJsCallResult()
-        subject.removeComment(createResult1.id!!) { r ->
+        subject.deleteComment(createResult1.id!!) { r ->
             deleteResult1 = r
             lock.countDown()
         }
@@ -973,7 +973,7 @@ class ApiManagerTest {
 
         lock = CountDownLatch(1)
         var deleteResult2 = GraphJsCallResult()
-        subject.removeComment(createResult2.id!!) { r ->
+        subject.deleteComment(createResult2.id!!) { r ->
             deleteResult2 = r
             lock.countDown()
         }
@@ -981,5 +981,67 @@ class ApiManagerTest {
         lock.await()
 
         assertTrue(deleteResult2.success)
+    }
+
+    @Test
+    fun privateContentCRUD() {
+        var lock = CountDownLatch(1)
+        var createResult = GraphJsCreateCallResult()
+        subject.addPrivateContent("First Secured!") { r ->
+            createResult = r
+            lock.countDown()
+        }
+
+        lock.await()
+
+        assertTrue(createResult.success)
+        assertNotNull(createResult.id)
+
+        lock = CountDownLatch(1)
+        var readResult = GraphJsContentResult()
+        subject.getPrivateContent(createResult.id!!) { r ->
+            readResult = r
+            lock.countDown()
+        }
+
+        lock.await()
+
+        assertTrue(readResult.success)
+        assertEquals("First Secured!", readResult.content)
+
+        lock = CountDownLatch(1)
+        var editResult = GraphJsCallResult()
+        subject.editPrivateContent(createResult.id!!, "First Secured!!!") { r ->
+            editResult = r
+            lock.countDown()
+        }
+
+        lock.await()
+
+        assertTrue(editResult.success)
+
+        lock = CountDownLatch(1)
+        subject.getPrivateContent(createResult.id!!) { r ->
+            readResult = r
+            lock.countDown()
+        }
+
+        lock.await()
+
+        assertTrue(readResult.success)
+        assertEquals("First Secured!!!", readResult.content)
+
+        assertTrue(editResult.success)
+
+        lock = CountDownLatch(1)
+        var deleteResult = GraphJsCallResult()
+        subject.deletePrivateContent(createResult.id!!) { r ->
+            deleteResult = r
+            lock.countDown()
+        }
+
+        lock.await()
+
+        assertTrue(deleteResult.success)
     }
 }

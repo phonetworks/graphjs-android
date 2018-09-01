@@ -630,10 +630,56 @@ class ApiManager
         }
     }
 
-    fun removeComment(commentId: String, callback: (GraphJsCallResult) -> Unit) {
+    fun deleteComment(commentId: String, callback: (GraphJsCallResult) -> Unit) {
         val params = mapOf("comment_id" to commentId)
 
         addGetJsonRequest("removeComment", params) { response ->
+            val success: Boolean = response.optBoolean("success")
+            val reason: String? = response.optString("reason", null)
+
+            callback(GraphJsCallResult(success, reason))
+        }
+    }
+
+    fun addPrivateContent(data: String, callback: (GraphJsCreateCallResult) -> Unit) {
+        val params = mapOf("data" to data)
+
+        addGetJsonRequest("addPrivateContent", params) { response ->
+            val success: Boolean = response.optBoolean("success")
+            val reason: String? = response.optString("reason", null)
+            val id: String? = response.optString("id", null)
+
+            callback(GraphJsCreateCallResult(success, reason, id))
+        }
+    }
+
+    fun getPrivateContent(contentId: String, callback: (GraphJsContentResult) -> Unit) {
+        val params = mapOf("id" to contentId)
+
+        addGetJsonRequest("getPrivateContent", params) { response ->
+            val success: Boolean = response.optBoolean("success")
+            val reason: String? = response.optString("reason", null)
+            val content: String? = response.optString("contents", null)
+
+            callback(GraphJsContentResult(success, reason, content))
+        }
+    }
+
+    fun editPrivateContent(contentId: String, data: String, callback: (GraphJsCallResult) -> Unit) {
+        val params = mapOf("id" to contentId, "data" to data)
+
+        addGetJsonRequest("editPrivateContent", params) { response ->
+            val success: Boolean = response.optBoolean("success")
+            val reason: String? = response.optString("reason", null)
+
+            callback(GraphJsCallResult(success, reason))
+        }
+    }
+
+    fun deletePrivateContent(contentId: String, callback: (GraphJsCallResult) -> Unit) {
+        val params = mapOf("id" to contentId)
+
+        addGetJsonRequest("deletePrivateContent", params) { response ->
             val success: Boolean = response.optBoolean("success")
             val reason: String? = response.optString("reason", null)
 

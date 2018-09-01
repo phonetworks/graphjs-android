@@ -107,3 +107,8 @@ data class GraphJsCommentsResult(
         val success: Boolean = false,
         val reason: String? = null,
         val comments: Map<String, ContentComment> = mapOf())
+
+data class GraphJsContentResult(
+        val success: Boolean = false,
+        val reason: String? = null,
+        val content: String? = null)
