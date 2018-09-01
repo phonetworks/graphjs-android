@@ -41,7 +41,7 @@ class ApiManagerTest {
         context = InstrumentationRegistry.getTargetContext()
 
         val lock = CountDownLatch(1)
-        var result = GraphJsLoginCallResult()
+        var result = GraphJsLoginResult()
 
         subject.login(testUserName, testUserPassword) { r ->
             result = r
@@ -75,7 +75,7 @@ class ApiManagerTest {
     @Test
     fun signupInvalidEmail() {
         val lock = CountDownLatch(1)
-        var result = GraphJsRegisterCallResult()
+        var result = GraphJsRegisterResult()
 
         subject.signup(testUserName, testUserEmail.replace('@', 'a'), testUserPassword) { r ->
             result = r
@@ -91,7 +91,7 @@ class ApiManagerTest {
     @Test
     fun signupExistingUser() {
         val lock = CountDownLatch(1)
-        var result = GraphJsRegisterCallResult()
+        var result = GraphJsRegisterResult()
 
         subject.signup(testUserName, testUserEmail, testUserPassword) { r ->
             result = r
@@ -107,7 +107,7 @@ class ApiManagerTest {
     @Test
     fun whoami() {
         val lock = CountDownLatch(1)
-        var result = GraphJsLoginCallResult()
+        var result = GraphJsLoginResult()
 
         subject.whoami { r ->
             result = r
@@ -123,7 +123,7 @@ class ApiManagerTest {
     @Test
     fun loginUnregisteredUser() {
         val lock = CountDownLatch(1)
-        var result = GraphJsLoginCallResult()
+        var result = GraphJsLoginResult()
 
         subject.login("xxxxxx", "xxxxxx@example.org") { r ->
             result = r
@@ -174,7 +174,7 @@ class ApiManagerTest {
     @Test
     fun profileHappy() {
         val lock = CountDownLatch(1)
-        var result = GraphJsProfileCallResult()
+        var result = GraphJsProfileResult()
 
         subject.profile(testUserId) { r ->
             result = r
@@ -194,7 +194,7 @@ class ApiManagerTest {
     @Test
     fun profileCurrentUserHappy() {
         val lock = CountDownLatch(1)
-        var result = GraphJsProfileCallResult()
+        var result = GraphJsProfileResult()
 
         subject.profile { r ->
             result = r
@@ -214,7 +214,7 @@ class ApiManagerTest {
     @Test
     fun profileWithBadUserId() {
         val lock = CountDownLatch(1)
-        var result = GraphJsProfileCallResult()
+        var result = GraphJsProfileResult()
 
         subject.profile("00000000000000000000000000000") { r ->
             result = r
@@ -350,7 +350,7 @@ class ApiManagerTest {
     @Test
     fun generateFeedTokenShallow() {
         val lock = CountDownLatch(1)
-        var result = GraphJsCallFeedTokenResult()
+        var result = GraphJsFeedTokenResult()
 
         subject.generateFeedToken(FeedType.Wall) { r ->
             result = r
@@ -368,7 +368,7 @@ class ApiManagerTest {
     @Test
     fun threadsShallow() {
         val lock = CountDownLatch(1)
-        var result = GraphJsThreadsCallResult()
+        var result = GraphJsThreadsResult()
 
         subject.threads { r ->
             result = r
@@ -384,7 +384,7 @@ class ApiManagerTest {
     @Test
     fun threadCRUD() {
         var lock = CountDownLatch(1)
-        var createResult = GraphJsCreateCallResult()
+        var createResult = GraphJsCreateResult()
 
         subject.startThread("Unit Test Thread", "First!") { r ->
             createResult = r
@@ -397,7 +397,7 @@ class ApiManagerTest {
         assertNotNull(createResult.id)
 
         lock = CountDownLatch(1)
-        var replyResult = GraphJsCreateCallResult()
+        var replyResult = GraphJsCreateResult()
 
         subject.replyThread(createResult.id!!, "Second!") { r ->
             replyResult = r
@@ -421,7 +421,7 @@ class ApiManagerTest {
         assertTrue(editResult.success)
 
         lock = CountDownLatch(1)
-        var getResult = GraphJsThreadCallResult()
+        var getResult = GraphJsThreadResult()
         subject.getThread(createResult.id!!) { r ->
             getResult = r
             lock.countDown()
@@ -461,7 +461,7 @@ class ApiManagerTest {
     @Test
     fun members() {
         val lock = CountDownLatch(1)
-        var result = GraphJsMembersCallResult()
+        var result = GraphJsMembersResult()
 
         subject.members { r ->
             result = r
@@ -477,7 +477,7 @@ class ApiManagerTest {
     @Test
     fun followers() {
         val lock = CountDownLatch(1)
-        var result = GraphJsFollowersCallResult()
+        var result = GraphJsMembersResult()
 
         subject.followers { r ->
             result = r
@@ -487,13 +487,13 @@ class ApiManagerTest {
         lock.await()
 
         assertTrue(result.success)
-        assertNotNull(result.followers)
+        assertNotNull(result.members)
     }
 
     @Test
     fun following() {
         val lock = CountDownLatch(1)
-        var result = GraphJsFollowingCallResult()
+        var result = GraphJsMembersResult()
 
         subject.following { r ->
             result = r
@@ -503,7 +503,7 @@ class ApiManagerTest {
         lock.await()
 
         assertTrue(result.success)
-        assertNotNull(result.following)
+        assertNotNull(result.members)
     }
 
     @Test
@@ -543,7 +543,7 @@ class ApiManagerTest {
     @Test
     fun talkingToMyself() {
         val lock = CountDownLatch(1)
-        var result = GraphJsSendMessageResult()
+        var result = GraphJsCreateResult()
 
         subject.sendDirectMessage(testUserId, "Hello to myself") { r ->
             result = r
@@ -559,7 +559,7 @@ class ApiManagerTest {
     @Test
     fun anonymousMessageHappy() {
         val lock = CountDownLatch(1)
-        var result = GraphJsSendMessageResult()
+        var result = GraphJsCreateResult()
 
         val cookieManager = CookieManager.getDefault()
         CookieManager.setDefault(null)
@@ -580,7 +580,7 @@ class ApiManagerTest {
     @Test
     fun anonymousMessageFail() {
         val lock = CountDownLatch(1)
-        var result = GraphJsSendMessageResult()
+        var result = GraphJsCreateResult()
 
         val cookieManager = CookieManager.getDefault()
         CookieManager.setDefault(null)
@@ -601,7 +601,7 @@ class ApiManagerTest {
     @Test
     fun countUnreadMessagesHappy() {
         val lock = CountDownLatch(1)
-        var result = GraphJsCallCountResult()
+        var result = GraphJsCountResult()
 
         subject.countUnreadMessages { r ->
             result = r
@@ -696,7 +696,7 @@ class ApiManagerTest {
     @Test
     fun groupCRUD() {
         var lock = CountDownLatch(1)
-        var createResult = GraphJsCreateCallResult()
+        var createResult = GraphJsCreateResult()
 
         subject.createGroup("MyGroup", "MyGroupDescription") { r ->
             createResult = r
@@ -814,7 +814,7 @@ class ApiManagerTest {
         val contentUrl = URI.create("https://www.youtube.com/watch?v=Tm8LGxTLtQk")
         var lock = CountDownLatch(1)
 
-        var result = GraphJsCallCountResult()
+        var result = GraphJsCountResult()
         subject.star(contentUrl) { r ->
             result = r
             lock.countDown()
@@ -912,7 +912,7 @@ class ApiManagerTest {
         val contentUrl = URI.create("https://www.youtube.com/watch?v=vjF9GgrY9c0")
 
         var lock = CountDownLatch(1)
-        var createResult1 = GraphJsCreateCallResult()
+        var createResult1 = GraphJsCreateResult()
         subject.addComment(contentUrl, "First!") { r ->
             createResult1 = r
             lock.countDown()
@@ -924,7 +924,7 @@ class ApiManagerTest {
         assertNotNull(createResult1.id)
 
         lock = CountDownLatch(1)
-        var createResult2 = GraphJsCreateCallResult()
+        var createResult2 = GraphJsCreateResult()
         subject.addComment(contentUrl, "Second!") { r ->
             createResult2 = r
             lock.countDown()
@@ -986,7 +986,7 @@ class ApiManagerTest {
     @Test
     fun privateContentCRUD() {
         var lock = CountDownLatch(1)
-        var createResult = GraphJsCreateCallResult()
+        var createResult = GraphJsCreateResult()
         subject.addPrivateContent("First Secured!") { r ->
             createResult = r
             lock.countDown()

@@ -30,7 +30,7 @@ data class ThreadMessage(
         @Json("timestamp") val created: Date)
 
 data class DirectMessage(
-        val id: String? = null,
+        val id: String,
         @Json("from") val fromUserId: String? = null,   // may be empty for outgoing
         @Json("to") val toUserId: String? = null,       // may be empty for incoming
         @Json("message") val content: String? = null,

@@ -2,70 +2,57 @@ package com.phonetwork.graphjs
 
 import com.beust.klaxon.Json
 
+// TODO review to remove success from some Result classes to avoid double check success and data property
+
 data class GraphJsCallResult(
         val success: Boolean = false,
         val reason: String? = null)
 
-data class GraphJsRegisterCallResult(
+data class GraphJsRegisterResult(
         val success: Boolean = false,
         val reason: String? = null,
         val userId: String? = null)
 
-data class GraphJsLoginCallResult(
+data class GraphJsLoginResult(
         val success: Boolean = false,
         val reason: String? = null,
         val userId: String? = null)
 
-data class GraphJsProfileCallResult(
+data class GraphJsProfileResult(
         val success: Boolean = false,
         val reason: String? = null,
         val profile: UserProfile? = null)
 
-data class GraphJsCreateCallResult(
+data class GraphJsCreateResult(
         val success: Boolean = false,
         val reason: String? = null,
         val id: String? = null)
 
-data class GraphJsThreadCallResult(
+data class GraphJsThreadResult(
         val success: Boolean = false,
         val reason: String? = null,
         val title: String? = null,
         val messages: List<ThreadMessage> = listOf())
 
-data class GraphJsThreadsCallResult(
+data class GraphJsThreadsResult(
         val success: Boolean = false,
         val reason: String? = null,
         val threads: List<ForumThread> = listOf())
 
-data class GraphJsCallCountResult(
+data class GraphJsCountResult(
         val success: Boolean = false,
         val reason: String? = null,
         val count: Int = 0)
 
-data class GraphJsCallFeedTokenResult(
+data class GraphJsFeedTokenResult(
         val success: Boolean = false,
         val reason: String? = null,
         val token: String? = null)
 
-data class GraphJsMembersCallResult(
+data class GraphJsMembersResult(
         val success: Boolean = false,
         val reason: String? = null,
         val members: Map<String, Member> = mapOf())
-
-data class GraphJsFollowingCallResult(
-        val success: Boolean = false,
-        val reason: String? = null,
-        val following: Map<String, Member> = mapOf())
-
-data class GraphJsFollowersCallResult(
-        val success: Boolean = false,
-        val reason: String? = null,
-        val followers: Map<String, Member> = mapOf())
-
-data class GraphJsSendMessageResult(
-        val success: Boolean = false,
-        val reason: String? = null,
-        val messageId: String? = null)
 
 data class GraphJsDirectMessageResult(
         val success: Boolean = false,
@@ -75,7 +62,7 @@ data class GraphJsDirectMessageResult(
 data class GraphJsDirectMessagesResult(
         val success: Boolean = false,
         val reason: String? = null,
-        val messages: Map<String, DirectMessage>? = mapOf())
+        val messages: Map<String, DirectMessage> = mapOf())
 
 data class GraphJsGroupsResult(
         val success: Boolean = false,
@@ -90,7 +77,7 @@ data class GraphJsGroupResult(
 data class GraphJsGroupMembersResult(
         val success: Boolean = false,
         val reason: String? = null,
-        @Json("members")val memberIds: List<String> = listOf())
+        @Json("members") val memberIds: List<String> = listOf())
 
 data class GraphJsIsStarredResult(
         val success: Boolean = false,

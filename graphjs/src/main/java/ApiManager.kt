@@ -65,7 +65,7 @@ class ApiManager
     //region User API
 
     fun signup(username: String, email: String, password: String,
-               callback: (GraphJsRegisterCallResult) -> Unit) {
+               callback: (GraphJsRegisterResult) -> Unit) {
         val params = mapOf("username" to username, "email" to email, "password" to password)
 
         addGetJsonRequest("signup", params) { response ->
@@ -73,11 +73,11 @@ class ApiManager
             val reason: String? = response.optString("reason", null)
             val id: String? = response.optString("id", null)
 
-            callback(GraphJsRegisterCallResult(success, reason, id))
+            callback(GraphJsRegisterResult(success, reason, id))
         }
     }
 
-    fun login(username: String, password: String, callback: (GraphJsLoginCallResult) -> Unit) {
+    fun login(username: String, password: String, callback: (GraphJsLoginResult) -> Unit) {
         val params = mapOf("username" to username, "password" to password)
 
         addGetJsonRequest("login", params) { response ->
@@ -101,17 +101,17 @@ class ApiManager
                 currentUserId = id
             }
 
-            callback(GraphJsLoginCallResult(success, reason, id))
+            callback(GraphJsLoginResult(success, reason, id))
         }
     }
 
-    fun whoami(callback: (GraphJsLoginCallResult) -> Unit) {
+    fun whoami(callback: (GraphJsLoginResult) -> Unit) {
         addGetJsonRequest("whoami") { response ->
             val success: Boolean = response.optBoolean("success")
             val reason: String? = response.optString("reason", null)
             val id: String? = response.optString("id", null)
 
-            callback(GraphJsLoginCallResult(success, reason, id))
+            callback(GraphJsLoginResult(success, reason, id))
         }
     }
 
@@ -158,7 +158,7 @@ class ApiManager
     //region Profile API
 
     @JvmOverloads
-    fun profile(userId: String? = null, callback: (GraphJsProfileCallResult) -> Unit) {
+    fun profile(userId: String? = null, callback: (GraphJsProfileResult) -> Unit) {
         val params = mapOf("id" to (userId ?: currentUserId))
 
         addGetJsonRequest("getProfile", params) { response ->
@@ -166,7 +166,7 @@ class ApiManager
             val reason: String? = response.optString("reason", null)
             val profile = parseSafe<UserProfile>(response.optJSONObject("profile"))
 
-            callback(GraphJsProfileCallResult(success, reason, profile))
+            callback(GraphJsProfileResult(success, reason, profile))
         }
     }
 
@@ -194,7 +194,7 @@ class ApiManager
     }
 
     @JvmOverloads
-    fun generateFeedToken(type: FeedType, userId: String? = null, callback: (GraphJsCallFeedTokenResult) -> Unit) {
+    fun generateFeedToken(type: FeedType, userId: String? = null, callback: (GraphJsFeedTokenResult) -> Unit) {
         val params = mapOf("type" to type.value, "id" to (userId ?: currentUserId))
 
         addGetJsonRequest("generateFeedToken", params) { response ->
@@ -202,13 +202,13 @@ class ApiManager
             val reason: String? = response.optString("reason", null)
             val token: String? = response.optString("token", null)
 
-            callback(GraphJsCallFeedTokenResult(success, reason, token))
+            callback(GraphJsFeedTokenResult(success, reason, token))
         }
     }
 
     //region Thread API
 
-    fun startThread(title: String, message: String, callback: (GraphJsCreateCallResult) -> Unit) {
+    fun startThread(title: String, message: String, callback: (GraphJsCreateResult) -> Unit) {
         val params = mapOf("title" to title, "message" to message)
 
         addGetJsonRequest("startThread", params) { response ->
@@ -216,11 +216,11 @@ class ApiManager
             val reason: String? = response.optString("reason", null)
             val id: String? = response.optString("id", null)
 
-            callback(GraphJsCreateCallResult(success, reason, id))
+            callback(GraphJsCreateResult(success, reason, id))
         }
     }
 
-    fun replyThread(threadId: String, message: String, callback: (GraphJsCreateCallResult) -> Unit) {
+    fun replyThread(threadId: String, message: String, callback: (GraphJsCreateResult) -> Unit) {
         val params = mapOf("id" to threadId, "message" to message)
 
         addGetJsonRequest("reply", params) { response ->
@@ -228,11 +228,11 @@ class ApiManager
             val reason: String? = response.optString("reason", null)
             val id: String? = response.optString("id", null)
 
-            callback(GraphJsCreateCallResult(success, reason, id))
+            callback(GraphJsCreateResult(success, reason, id))
         }
     }
 
-    fun getThread(threadId: String, callback: (GraphJsThreadCallResult) -> Unit) {
+    fun getThread(threadId: String, callback: (GraphJsThreadResult) -> Unit) {
         val params = mapOf("id" to threadId)
 
         addGetJsonRequest("getThread", params) { response ->
@@ -241,17 +241,17 @@ class ApiManager
             val title: String? = response.optString("title", null)
             val messages = parseArraySafe<ThreadMessage>(response.optJSONArray("messages"))
 
-            callback(GraphJsThreadCallResult(success, reason, title, messages))
+            callback(GraphJsThreadResult(success, reason, title, messages))
         }
     }
 
-    fun threads(callback: (GraphJsThreadsCallResult) -> Unit) {
+    fun threads(callback: (GraphJsThreadsResult) -> Unit) {
         addGetJsonRequest("getThreads") { response ->
             val success: Boolean = response.optBoolean("success")
             val reason: String? = response.optString("reason", null)
             val threads = parseArraySafe<ForumThread>(response.optJSONArray("threads"))
 
-            callback(GraphJsThreadsCallResult(success, reason, threads))
+            callback(GraphJsThreadsResult(success, reason, threads))
         }
     }
 
@@ -282,18 +282,18 @@ class ApiManager
 
     //region Members API
 
-    fun members(callback: (GraphJsMembersCallResult) -> Unit) {
+    fun members(callback: (GraphJsMembersResult) -> Unit) {
         addGetJsonRequest("getMembers") { response ->
             val success: Boolean = response.optBoolean("success")
             val reason: String? = response.optString("reason", null)
             val members = parseMapSafe<Member>(response.optJSONObject("members"))
 
-            callback(GraphJsMembersCallResult(success, reason, members))
+            callback(GraphJsMembersResult(success, reason, members))
         }
     }
 
     @JvmOverloads
-    fun followers(userId: String? = null, callback: (GraphJsFollowersCallResult) -> Unit) {
+    fun followers(userId: String? = null, callback: (GraphJsMembersResult) -> Unit) {
         val params = mapOf("id" to (userId ?: currentUserId))
 
         addGetJsonRequest("getFollowers", params) { response ->
@@ -301,12 +301,12 @@ class ApiManager
             val reason: String? = response.optString("reason", null)
             val followers = parseMapSafe<Member>(response.optJSONObject("followers"))
 
-            callback(GraphJsFollowersCallResult(success, reason, followers))
+            callback(GraphJsMembersResult(success, reason, followers))
         }
     }
 
     @JvmOverloads
-    fun following(userId: String? = null, callback: (GraphJsFollowingCallResult) -> Unit) {
+    fun following(userId: String? = null, callback: (GraphJsMembersResult) -> Unit) {
         val params = mapOf("id" to (userId ?: currentUserId))
 
         addGetJsonRequest("getFollowing", params) { response ->
@@ -314,7 +314,7 @@ class ApiManager
             val reason: String? = response.optString("reason", null)
             val following = parseMapSafe<Member>(response.optJSONObject("following"))
 
-            callback(GraphJsFollowingCallResult(success, reason, following))
+            callback(GraphJsMembersResult(success, reason, following))
         }
     }
 
@@ -342,7 +342,7 @@ class ApiManager
 
     //region Direct Messaging API
 
-    fun sendDirectMessage(toUserId: String, message: String, callback: (GraphJsSendMessageResult) -> Unit) {
+    fun sendDirectMessage(toUserId: String, message: String, callback: (GraphJsCreateResult) -> Unit) {
         val params = mapOf("to" to toUserId, "message" to message)
 
         addGetJsonRequest("sendMessage", params) { response ->
@@ -350,12 +350,12 @@ class ApiManager
             val reason: String? = response.optString("reason", null)
             val messageId: String? = response.optString("id", null)
 
-            callback(GraphJsSendMessageResult(success, reason, messageId))
+            callback(GraphJsCreateResult(success, reason, messageId))
         }
     }
 
     fun sendDirectAnonymousMessage(sender: String, toUserId: String, message: String,
-                                   callback: (GraphJsSendMessageResult) -> Unit) {
+                                   callback: (GraphJsCreateResult) -> Unit) {
         val params = mapOf("sender" to sender, "to" to toUserId, "message" to message)
 
         addGetJsonRequest("sendAnonymousMessage", params) { response ->
@@ -363,17 +363,17 @@ class ApiManager
             val reason: String? = response.optString("reason", null)
             val messageId: String? = response.optString("id", null)
 
-            callback(GraphJsSendMessageResult(success, reason, messageId))
+            callback(GraphJsCreateResult(success, reason, messageId))
         }
     }
 
-    fun countUnreadMessages(callback: (GraphJsCallCountResult) -> Unit) {
+    fun countUnreadMessages(callback: (GraphJsCountResult) -> Unit) {
         addGetJsonRequest("countUnreadMessages") { response ->
             val success: Boolean = response.optBoolean("success")
             val reason: String? = response.optString("reason", null)
             val count: Int = response.optInt("count", 0)
 
-            callback(GraphJsCallCountResult(success, reason, count))
+            callback(GraphJsCountResult(success, reason, count))
         }
     }
 
@@ -431,7 +431,7 @@ class ApiManager
 
     //region Group managment API
 
-    fun createGroup(title: String, description: String, callback: (GraphJsCreateCallResult) -> Unit) {
+    fun createGroup(title: String, description: String, callback: (GraphJsCreateResult) -> Unit) {
         val params = mapOf("title" to title, "description" to description)
 
         addGetJsonRequest("createGroup", params) { response ->
@@ -439,7 +439,7 @@ class ApiManager
             val reason: String? = response.optString("reason", null)
             val id: String? = response.optString("id", null)
 
-            callback(GraphJsCreateCallResult(success, reason, id))
+            callback(GraphJsCreateResult(success, reason, id))
         }
     }
 
@@ -526,7 +526,7 @@ class ApiManager
 
     //region Content Management API
 
-    fun star(contentUrl: URI, callback: (GraphJsCallCountResult) -> Unit) {
+    fun star(contentUrl: URI, callback: (GraphJsCountResult) -> Unit) {
         val params = mapOf("url" to contentUrl.toString())
 
         addGetJsonRequest("star", params) { response ->
@@ -534,7 +534,7 @@ class ApiManager
             val reason: String? = response.optString("reason", null)
             val count: Int = response.optInt("count", 0)
 
-            callback(GraphJsCallCountResult(success, reason, count))
+            callback(GraphJsCountResult(success, reason, count))
         }
     }
 
@@ -582,7 +582,7 @@ class ApiManager
         }
     }
 
-    fun addComment(contentUrl: URI, content: String, callback: (GraphJsCreateCallResult) -> Unit) {
+    fun addComment(contentUrl: URI, content: String, callback: (GraphJsCreateResult) -> Unit) {
         val params = mapOf("url" to contentUrl.toString(), "content" to content)
 
         addGetJsonRequest("addComment", params) { response ->
@@ -590,7 +590,7 @@ class ApiManager
             val reason: String? = response.optString("reason", null)
             val id: String? = response.optString("comment_id", null)
 
-            callback(GraphJsCreateCallResult(success, reason, id))
+            callback(GraphJsCreateResult(success, reason, id))
         }
     }
 
@@ -641,7 +641,7 @@ class ApiManager
         }
     }
 
-    fun addPrivateContent(data: String, callback: (GraphJsCreateCallResult) -> Unit) {
+    fun addPrivateContent(data: String, callback: (GraphJsCreateResult) -> Unit) {
         val params = mapOf("data" to data)
 
         addGetJsonRequest("addPrivateContent", params) { response ->
@@ -649,7 +649,7 @@ class ApiManager
             val reason: String? = response.optString("reason", null)
             val id: String? = response.optString("id", null)
 
-            callback(GraphJsCreateCallResult(success, reason, id))
+            callback(GraphJsCreateResult(success, reason, id))
         }
     }
 
