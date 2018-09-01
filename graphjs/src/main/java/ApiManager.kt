@@ -614,7 +614,7 @@ class ApiManager
             val commentEntries = response.optJSONArray("comments")
 
             val comments = mutableMapOf<String, ContentComment>()
-            for (i in 0 until commentEntries.length() - 1) {
+            for (i in 0 until commentEntries.length()) {
                 val commentEntry = commentEntries.getJSONObject(i)
 
                 for (key in commentEntry.keys()) {

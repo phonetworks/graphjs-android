@@ -17,7 +17,7 @@ import java.util.concurrent.CountDownLatch
 
 @RunWith(AndroidJUnit4::class)
 class ApiManagerTest {
-    // data can be generated with git@github.com:phonetworks/graphjs.git/scripts/data-gen
+    // data can be generated with git@github.com:esokullu/graphjs-website/tree/master/scripts/data-gen
     companion object {
         const val testUserName = "johndoe"
         const val testUserPassword = "qwerty"
