@@ -411,7 +411,7 @@ class ApiManagerTest {
 
         lock = CountDownLatch(1)
         var editResult = GraphJsCallResult()
-        subject.editForumPost(createResult.id!!, "First!!") { r->
+        subject.editForumPost(createResult.id!!, "First!!") { r ->
             editResult = r
             lock.countDown()
         }

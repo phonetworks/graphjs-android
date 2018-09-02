@@ -1,6 +1,6 @@
-# GraphJS
+# GraphJS-Android
 
-GraphJS is a Kotlin client-side library to help developers easily enable social features on their mobile apps. With only a few lines of code, you can easily add authentication, comments, messages, forum, groups, profiles etc. to your static web pages. 
+GraphJS-Android is a Kotlin client-side library to help developers easily enable social features on their mobile apps. With only a few lines of code, you can easily add authentication, comments, messages, forum, groups, profiles etc. to your static web pages. 
 
 ## Getting Started
 

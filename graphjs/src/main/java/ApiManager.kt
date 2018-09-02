@@ -147,7 +147,7 @@ class ApiManager
     fun verifyPasswordReset(email: String, code: String, callback: (GraphJsCallResult) -> Unit) {
         val params = mapOf("email" to email, "code" to code)
 
-        addGetJsonRequest("resetPassword", params) { response ->
+        addGetJsonRequest("verifyReset", params) { response ->
             val success: Boolean = response.optBoolean("success")
             val reason: String? = response.optString("reason", null)
 
