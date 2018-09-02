@@ -19,3 +19,9 @@
  - In opened dialog press top-left plus -> Android Instrumential Tests
  - Change name to `test`
  - Select module `graphjs`
+
+OR
+
+ - Attach device or start emulator ((Genymotion](https://www.genymotion.com/) recomemded)
+ - Open terminal & switch to project directory
+ - Run `./gradlew connectedAndroidTest`
