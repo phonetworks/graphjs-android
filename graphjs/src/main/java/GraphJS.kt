@@ -20,7 +20,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-class GraphJsApiManager
+class GraphJS
     @JvmOverloads constructor(
             context: Context,
             private val publicId: String = "16D58CF2-FD88-4A49-972B-6F60054BF023",
