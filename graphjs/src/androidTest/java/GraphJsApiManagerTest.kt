@@ -1,4 +1,4 @@
-package com.phonetwork.graphjs
+package org.phonetworks.graphjs
 
 import android.content.Context
 import android.support.test.InstrumentationRegistry
@@ -166,7 +166,7 @@ class GraphJsApiManagerTest {
         lock.await()
 
         assert(!result.success)
-        assertNull(result.reason)
+        assertEquals("Valid email and code required.", result.reason)
     }
 
     //region Profile API
@@ -643,7 +643,7 @@ class GraphJsApiManagerTest {
 
         assertTrue(result.success)
 
-        for ((messageId, message) in result.messages!!) {
+        for ((messageId, message) in result.messages) {
             val msgLock = CountDownLatch(1)
             var msgResult = GraphJsDirectMessageResult()
 
@@ -675,7 +675,7 @@ class GraphJsApiManagerTest {
         assertTrue(result.success)
         assertNotNull(result.messages)
 
-        for ((messageId, message) in result.messages!!) {
+        for ((messageId, _) in result.messages) {
             val msgLock = CountDownLatch(1)
             var msgResult = GraphJsDirectMessagesResult()
 
@@ -868,19 +868,19 @@ class GraphJsApiManagerTest {
         val contentUrl3 = URI.create("https://www.youtube.com/watch?v=3hJOCCXPwT8")
 
         var lock = CountDownLatch(1)
-        subject.star(contentUrl1) { r ->
+        subject.star(contentUrl1) { _ ->
             lock.countDown()
         }
         lock.await()
 
         lock = CountDownLatch(1)
-        subject.star(contentUrl2) { r ->
+        subject.star(contentUrl2) { _ ->
             lock.countDown()
         }
         lock.await()
 
         lock = CountDownLatch(1)
-        subject.star(contentUrl3) { r ->
+        subject.star(contentUrl3) { _ ->
             lock.countDown()
         }
         lock.await()

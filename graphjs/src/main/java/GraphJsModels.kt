@@ -1,6 +1,7 @@
-package com.phonetwork.graphjs
+package org.phonetworks.graphjs
 
 import com.beust.klaxon.Json
+
 import java.net.URI
 import java.util.*
 

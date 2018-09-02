@@ -1,4 +1,4 @@
-package com.phonetwork.graphjs;
+package org.phonetworks.graphjs
 
 import android.content.Context
 import android.util.Log
